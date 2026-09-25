@@ -1,0 +1,78 @@
+import { t } from "@/i18n";
+
+export const aiPlatforms = [
+  {
+    id: "gpt",
+    traceDomain: "chatgpt.com",
+    apiUrl: "https://api.openai.com/v1",
+    docsUrl: "https://platform.openai.com/docs/overview",
+    name: "ChatGPT",
+    domain: "chatgpt.com",
+    statusId: "9",
+  },
+  {
+    id: "claude",
+    traceDomain: "claude.ai",
+    apiUrl: "https://api.anthropic.com",
+    docsUrl: "https://platform.claude.com/docs/en/api/overview",
+    name: "Claude",
+    domain: "claude.ai",
+    statusId: "4",
+  },
+  {
+    id: "grok",
+    traceDomain: "grok.com",
+    apiUrl: "https://api.x.ai",
+    docsUrl: "https://docs.x.ai/",
+    statusId: "33",
+    name: "Grok",
+    domain: "grok.com",
+    statusPage: "https://status.x.ai",
+  },
+  {
+    id: "perplexity",
+    traceDomain: "www.perplexity.ai",
+    apiUrl: "https://api.perplexity.ai",
+    docsUrl: "https://docs.perplexity.ai/",
+    name: "Perplexity",
+    domain: "www.perplexity.ai",
+    statusId: "10",
+  },
+  {
+    id: "gemini",
+    apiUrl: "https://generativelanguage.googleapis.com",
+    docsUrl: "https://ai.google.dev/gemini-api/docs",
+    statusId: "31",
+    name: "Gemini",
+    domain: "gemini.google.com",
+    statusPage: "https://aistudio.google.com/status",
+    statusLabel: t("AI Studio / Gemini API 状态"),
+  },
+  {
+    id: "deepseek",
+    apiUrl: "https://api.deepseek.com",
+    docsUrl: "https://api-docs.deepseek.com/",
+    statusId: "32",
+    name: "DeepSeek",
+    domain: "chat.deepseek.com",
+    statusPage: "https://status.deepseek.com",
+  },
+  {
+    id: "qwen",
+    apiUrl: "https://dashscope-us.aliyuncs.com/compatible-mode/v1",
+    docsUrl:
+      "https://www.alibabacloud.com/help/en/model-studio/compatibility-of-openai-with-dashscope",
+    statusId: "34",
+    name: t("通义千问"),
+    domain: "chat.qwen.ai",
+  },
+  {
+    id: "kimi",
+    apiUrl: "https://api.moonshot.cn/v1",
+    docsUrl: "https://platform.moonshot.cn/docs/intro",
+    statusId: "35",
+    name: "Kimi",
+    domain: "www.kimi.com",
+  },
+];
+export type AiPlatform = (typeof aiPlatforms)[number];

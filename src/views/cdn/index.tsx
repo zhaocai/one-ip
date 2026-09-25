@@ -1,0 +1,109 @@
+import { useState } from "react";
+import { OverflowDetailText } from "@/components/overflow-detail-text";
+import { SiteLogo } from "@/components/site-logo";
+import {
+  PageHeading,
+  Pending,
+  ActionButton,
+  DataTable,
+} from "@/components/toolkit";
+import { Card, CardContent } from "@/components/ui/card";
+import { t } from "@/i18n";
+import { useQueries } from "@tanstack/react-query";
+import type { ColumnDef } from "@tanstack/react-table";
+import { checkCdnProvider } from "./api";
+import { providers, providerWebsite } from "./providers";
+
+type Row = {
+  name: string;
+  node?: string;
+  cache?: string;
+  loading: boolean;
+  error?: string;
+};
+const columns: ColumnDef<Row>[] = [
+  {
+    accessorKey: "name",
+    header: t("厂商"),
+    cell: ({ row }) => (
+      <span className="site-cell">
+        <SiteLogo website={providerWebsite(row.original.name)} />
+        <OverflowDetailText text={row.original.name} title={t("CDN 厂商")} />
+      </span>
+    ),
+  },
+  {
+    id: "node",
+    header: t("节点 / 响应标识"),
+    cell: ({ row }) =>
+      row.original.loading ? (
+        <Pending>{t("检测中...")}</Pending>
+      ) : (
+        <OverflowDetailText text={row.original.node ?? t("未知")} />
+      ),
+  },
+  {
+    accessorKey: "cache",
+    header: t("缓存"),
+    cell: ({ row }) => (
+      <OverflowDetailText
+        text={row.original.cache ?? "—"}
+        title={t("缓存状态")}
+      />
+    ),
+  },
+  {
+    id: "status",
+    header: t("状态"),
+    cell: ({ row }) =>
+      row.original.loading ? (
+        <Pending>{t("检测中...")}</Pending>
+      ) : (
+        <OverflowDetailText text={row.original.error ?? t("已完成")} />
+      ),
+  },
+];
+export default function CdnPage() {
+  const [round, setRound] = useState(0);
+  const queries = useQueries({
+    queries: providers.map((provider) => ({
+      queryKey: ["cdn-node-v2", provider.name, round],
+      retry: false,
+      staleTime: 0,
+      refetchOnWindowFocus: false,
+      queryFn: ({ signal }: { signal: AbortSignal }) =>
+        checkCdnProvider(provider, signal),
+    })),
+  });
+  const busy = queries.some((query) => query.isFetching);
+  return (
+    <>
+      <PageHeading title={t("CDN 命中节点")} description="" />
+      <div className="toolbar">
+        <ActionButton busy={busy} onClick={() => setRound((n) => n + 1)}>
+          {busy ? t("检测中...") : t("重新检测")}
+        </ActionButton>
+        <span className="small muted">
+          {queries.filter((query) => query.isSuccess).length}/{providers.length}{" "}
+          {t("可读取")}
+        </span>
+      </div>
+      <Card>
+        <CardContent>
+          <DataTable
+            className="cdn-table"
+            columns={columns}
+            getRowId={(row) => row.name}
+            animateChanges={false}
+            data={providers.map((provider, index) => ({
+              name: provider.name,
+              ...queries[index].data,
+              loading: queries[index].isFetching,
+              error: queries[index].error?.message,
+            }))}
+          />
+        </CardContent>
+      </Card>
+    </>
+  );
+}

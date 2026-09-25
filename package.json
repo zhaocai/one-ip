@@ -1,0 +1,91 @@
+{
+  "name": "one-ip",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "packageManager": "pnpm@10.32.1",
+  "engines": {
+    "node": ">=24"
+  },
+  "version": "26.922.1906",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "deploy": "wrangler deploy",
+    "build": "tsc -b && vite build",
+    "worker:dev": "node scripts/worker-dev.mjs",
+    "worker:types": "wrangler types",
+    "test": "wrangler deploy --dry-run --env='' --outdir .worker-test && node --import ./tests/register-paths.mjs --test tests/*.test.mjs",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "format": "prettier --write .",
+    "prepare": "husky",
+    "browser:build": "node scripts/build-browser-diagnostics.mjs"
+  },
+  "dependencies": {
+    "@cloudflare/speedtest": "1.13.0",
+    "@fingerprintjs/fingerprintjs": "5.2.0",
+    "@fontsource-variable/geist": "^5.3.0",
+    "@hookform/resolvers": "latest",
+    "@tanstack/react-query": "latest",
+    "@tanstack/react-table": "^8.21.3",
+    "class-variance-authority": "^0.7.1",
+    "cn": "^0.2.6",
+    "date-fns": "latest",
+    "echarts": "^6.1.0",
+    "fingerprintjs2": "2.1.4",
+    "gsap": "latest",
+    "jotai": "latest",
+    "leaflet": "^1.9.4",
+    "lucide-react": "latest",
+    "nprogress": "latest",
+    "qrcode.react": "^4.2.0",
+    "radix-ui": "latest",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-hook-form": "latest",
+    "react-liquid-glass-svg": "^1.0.5",
+    "react-router-dom": "latest",
+    "shadcn": "^4.21.0",
+    "shiki": "^4.4.3",
+    "sonner": "latest",
+    "tw-animate-css": "^1.4.0",
+    "vaul": "^1.1.2",
+    "zod": "latest"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "latest",
+    "@trivago/prettier-plugin-sort-imports": "latest",
+    "@types/leaflet": "^1.9.22",
+    "@types/node": "^24.13.3",
+    "@types/nprogress": "latest",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.1.0",
+    "esbuild": "0.28.1",
+    "eslint-config-prettier": "latest",
+    "husky": "latest",
+    "lint-staged": "latest",
+    "oxlint": "^1.79.0",
+    "prettier": "latest",
+    "prettier-plugin-tailwindcss": "latest",
+    "rollup": "4.63.1",
+    "tailwindcss": "latest",
+    "typescript": "~7.0.2",
+    "vite": "^8.2.2",
+    "wrangler": "^4.130.0"
+  },
+  "description": "IP diagnostics SPA with Cloudflare Workers",
+  "keywords": [
+    "react",
+    "vite",
+    "spa",
+    "shadcn-ui",
+    "tanstack-query",
+    "tanstack-table"
+  ],
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx,json,css,md}": [
+      "prettier --write"
+    ]
+  }
+}
